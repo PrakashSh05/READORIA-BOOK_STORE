@@ -236,8 +236,9 @@ function viewOrderDetails(orderData) {
 
             <div class="order-details-section">
                 <h3>Shipping Address</h3>
-                <p>${order.shipping_address?.street || 'N/A'}</p>
-                <p>${order.shipping_address?.city || 'N/A'}, ${order.shipping_address?.state || 'N/A'}</p>
+                <p>${order.shipping_address?.address || 'N/A'}</p>
+                <p>${order.shipping_address?.city || 'N/A'}</p>
+                <p>${order.shipping_address?.state || 'N/A'}</p>
                 <p>${order.shipping_address?.zipcode || 'N/A'}</p>
             </div>
 
