@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Readoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="/static/css/custom-alert.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Simplified Header Section -->
+    <header class="header">
+        <div class="header-1">
+            <a href="/" class="logo"><i class="fas fa-book"></i>Readoria</a>
+            <div class="profile-nav">
+                <a href="/" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+                <a href="/cart" class="nav-btn"><i class="fas fa-shopping-cart"></i> Cart</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="profile-container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-pic-container">
+                    <img src="https://ui-avatars.com/api/?name=User&background=27ae60&color=fff&size=150" alt="Profile Picture" id="profile-pic" class="profile-pic">
+                    <label for="profile-pic-input" class="profile-pic-upload">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profile-name">Loading...</h1>
+                    <p class="profile-email" id="profile-email">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal">Personal Info</button>
+                    <button class="tab-btn" data-tab="address">Address</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Personal Information Tab -->
+                    <div class="tab-pane active" id="personal-tab">
+                        <div class="profile-section-card">
+                            <h2><i class="fas fa-user"></i> Personal Information</h2>
+                            <div class="form-group">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" id="full-name" placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Enter your phone number">
+                            </div>
+                            <button class="save-btn" onclick="updatePersonalInfo()">Save Changes</button>
+                        </div>
+                    </div>
+
+                    <!-- Address Tab -->
+                    <div class="tab-pane" id="address-tab">
+                        <div class="profile-section-card">
+                            <h2><i class="fas fa-map-marker-alt"></i> Address Information</h2>
+                            <div class="form-group">
+                                <label for="street">Street Address</label>
+                                <input type="text" id="street" placeholder="Enter your street address">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" placeholder="Enter your city">
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" placeholder="Enter your state">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipcode">ZIP Code</label>
+                                <input type="text" id="zipcode" placeholder="Enter your ZIP code">
+                            </div>
+                            <button class="save-btn" onclick="updateAddress()">Save Address</button>
+                        </div>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="tab-pane" id="security-tab">
+                        <div class="profile-section-card">
+                            <h2><i class="fas fa-lock"></i> Account Security</h2>
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" placeholder="Enter current password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" placeholder="Confirm new password">
+                            </div>
+                            <button class="save-btn" onclick="updatePassword()">Update Password</button>
+                        </div>
+
+                        <!-- Account Deletion -->
+                        <div class="profile-section-card danger-zone">
+                            <h2><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
+                            <p class="warning-text">Once you delete your account, there is no going back. Please be certain.</p>
+                            <button class="delete-btn" onclick="confirmDeleteAccount()">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Centered Credits Section -->
+    <div class="credits">
+        Created by <span>Prakash Sharma</span> | All rights reserved.
+    </div>
+
+    <script src="/static/js/custom-alert.js"></script>
+    <script>
+        // Fix for user info display - Load user data from localStorage first
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to load user info from localStorage first
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                document.getElementById('profile-name').textContent = currentUser.name || 'User';
+                document.getElementById('profile-email').textContent = currentUser.email || '';
+                document.getElementById('full-name').value = currentUser.name || '';
+            }
+            
+            // Tab functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons and panes
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding tab pane
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+        });
+    </script>
+    <script src="/static/js/profile.js"></script>
+</body>
+</html> 

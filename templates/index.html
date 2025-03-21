@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Readoria</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/custom-alert.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+  </head>
+  <body>
+    <!-- header-section -->
+    <header class="header">
+      <div class="header-1">
+        <a href="/" class="logo"><i class="fas fa-book"></i>Readoria</a>
+
+        <form action="#" class="search-form" id="search-form">
+          <input
+            type="search"
+            name="search"
+            placeholder="Search books..."
+            id="search-box"
+            autocomplete="off"
+          />
+          <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="icons">
+          <div id="search-btn" class="fas fa-search"></div>
+          <a href="/cart" class="fas fa-shopping-cart" id="cart-icon"></a>
+          <div class="auth-container">
+            <button class="auth-btn login" id="login-btn">
+              <i class="fas fa-user-circle"></i>
+            </button>
+            <div class="dropdown-menu" id="auth-dropdown">
+              <a href="/profile"><i class="fas fa-user-cog"></i> Your Profile</a>
+              <a href="/order_details"><i class="fas fa-shopping-bag"></i> Your Orders</a>
+              <a href="#" data-action="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-2">
+        <nav class="navbar">
+          <a href="/">home</a>
+          <a href="/shop">Shop</a>
+          <a href="#featured">featured</a>
+          <a href="#arrivals">new arrivals</a>
+          <a href="/contact">contact</a>
+          <a href="/admin" id="admin-dashboard" class="hidden"><i class="fas fa-cog"></i> Dashboard</a>
+        </nav>
+      </div>
+    </header>
+    <nav class="bottom-navbar">
+      <a href="/" class="fas fa-home"></a>
+      <a href="/shop" class="fas fa-store"></a>
+      <a href="#featured" class="fas fa-list"></a>
+      <a href="#arrivals" class="fas fa-tags"></a>
+      <a href="/contact" class="fas fa-address-book"></a>
+      <a href="/admin" id="admin-dashboard-mobile" class="fas fa-cog hidden"></a>
+    </nav>
+    <!-- end-header-section -->
+
+     <!-- Auth Modal -->
+     <div id="auth-modal" class="modal">
+      <div class="modal-content">
+          <span class="close" data-action="close-modal">&times;</span>
+          
+          <!-- Login Form -->
+          <form id="login-form" class="auth-form" data-form="login">
+              <h2>Login</h2>
+              <div class="form-group">
+                  <label for="login-email">Email</label>
+                  <input type="email" id="login-email" required>
+              </div>
+              <div class="form-group">
+                  <label for="login-password">Password</label>
+                  <input type="password" id="login-password" required>
+              </div>
+              <button type="submit" class="auth-submit">Login</button>
+              <p class="form-switch">
+                  Don't have an account? 
+                  <a href="#" data-action="switch-form" data-form-type="signup">Sign Up</a>
+              </p>
+          </form>
+
+          <!-- Signup Form -->
+          <form id="signup-form" class="auth-form" data-form="signup">
+              <h2>Create Account</h2>
+              <div class="form-group">
+                  <label for="signup-name">Full Name</label>
+                  <input type="text" id="signup-name" required>
+              </div>
+              <div class="form-group">
+                  <label for="signup-email">Email</label>
+                  <input type="email" id="signup-email" required>
+              </div>
+              <div class="form-group">
+                  <label for="signup-password">Password</label>
+                  <input type="password" id="signup-password" required minlength="6">
+              </div>
+              <div class="form-group">
+                  <label for="signup-confirm">Confirm Password</label>
+                  <input type="password" id="signup-confirm" required minlength="6">
+              </div>
+              <button type="submit" class="auth-submit">Sign Up</button>
+              <p class="form-switch">
+                  Already have an account? 
+                  <a href="#" data-action="switch-form" data-form-type="login">Login</a>
+              </p>
+          </form>
+      </div>
+  </div>
+
+
+    <!-- home-section  -->
+    <section class="home" id="home">
+      <div class="row">
+        <div class="content">
+          <h3>Upto 25% off</h3>
+          <p>
+            Dive into a world of stories, knowledge, and adventure. From timeless classics to the latest bestsellers,
+             we have the perfect book waiting for you. Start your next journey today!"
+          </p>
+          <a href="./shop" class="btn">Shop now</a>
+        </div>
+
+        <div class="swiper books-slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <a href="#"
+                ><img
+                  src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
+                  alt="book-image"
+              /></a>
+            </div>
+            <div class="swiper-slide">
+              <a href="#"
+                ><img
+                  src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1545421684i/43306206.jpg"
+                  alt="book-image"
+              /></a>
+            </div>
+            <div class="swiper-slide">
+              <a href="#"
+                ><img
+                  src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1639169039i/59795331.jpg"
+                  alt="book-image"
+              /></a>
+            </div>
+            <div class="swiper-slide">
+              <a href="#"
+                ><img
+                  src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1470282721i/29502358.jpg"
+                  alt="book-image"
+              /></a>
+            </div>
+            <div class="swiper-slide">
+              <a href="#"
+                ><img
+                  src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1442726934i/4865.jpg"
+                  alt="book-image"
+              /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- home-section ends -->
+
+    <!-- icon section  starts -->
+    <section class="icon-container">
+      <div class="icon">
+        <i class="fas fa-plane"></i>
+        <div class="content">
+          <h3>Free Shipping</h3>
+          <p>Order over ₹200</p>
+        </div>
+      </div>
+
+      <div class="icon">
+        <i class="fas fa-lock"></i>
+        <div class="content">
+          <h3>Secure Payment</h3>
+          <p>100% Secure Payment</p>
+        </div>
+      </div>
+
+      <div class="icon">
+        <i class="fas fa-redo-alt"></i>
+        <div class="content">
+          <h3>Easy Return</h3>
+          <p>10 Days Return</p>
+        </div>
+      </div>
+
+      <div class="icon">
+        <i class="fas fa-headset"></i>
+        <div class="content">
+          <h3>24/7 support</h3>
+          <p>Call us Anytime</p>
+        </div>
+      </div>
+    </section>
+    <!-- icon section ends  -->
+
+    <!-- feature section  -->
+    <section class="featured" id="featured">
+      <h1 class="heading"><span>Featured Books</span></h1>
+      <div class="swiper featured-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/psycology of money.jpg" alt="Psychology of Money" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Psychology of Money</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_1', 'Psychology of Money', 150, '../static/images/psycology of money.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/atomic habits.jpg" alt="Atomic Habits" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Atomic Habits</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_2', 'Atomic Habits', 150, '../static/images/atomic habits.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/ikigai.jpg" alt="Ikigai" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Ikigai: The Japanese Secret</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_3', 'Ikigai', 150, '../static/images/ikigai.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/dopamine.jpg" alt="Dopamine" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Dopamine Nation</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_4', 'Dopamine Nation', 150, '../static/images/dopamine.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/how to influence and win frds.jpg" alt="How to Win Friends and Influence People" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>How to Win Friends</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_5', 'How to Win Friends and Influence People', 150, '../static/images/how to influence and win frds.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/sapiens-history.jpg" alt="Sapiens" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Sapiens: A Brief History</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_6', 'Sapiens', 150, '../static/images/sapiens-history.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide box">
+            <div class="image">
+              <img src="../static/images/doepicshit.jpg" alt="Do Epic Shit" />
+              <div class="discount">25% OFF</div>
+            </div>
+            <div class="content">
+              <h3>Do Epic Shit</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <button class="btn" onclick="addToCart('book_7', 'Do Epic Shit', 150, '../static/images/doepicshit.jpg')">Add to Cart</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
+    </section>
+    <!-- feature section end  -->
+
+    <!-- newsletter section  -->
+    <section class="newsletter">
+      <form action="">
+        <h3>Subscribe for latest updates</h3>
+        <input
+          type="email"
+          name=""
+          placeholder="Enter your email"
+          class="box"
+        />
+        <input type="submit" value="Subscribe" class="btn" />
+      </form>
+    </section>
+    <!-- newsletter section end  -->
+
+    <!-- arrival section start  -->
+    <section class="arrivals" id="arrivals">
+      <h1 class="heading"><span>New Arrivals</span></h1>
+      <div class="swiper arrivals-slider">
+        <div class="swiper-wrapper">
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
+                alt="book-image1"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1545421684i/43306206.jpg"
+                alt="book-image2"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1639169039i/59795331.jpg"
+                alt="book-image3"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1470282721i/29502358.jpg"
+                alt="book-image4"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="swiper arrivals-slider">
+        <div class="swiper-wrapper">
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1442726934i/4865.jpg"
+                alt="book-image"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1545421684i/43306206.jpg"
+                alt="book-image"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1545910967i/37502596.jpg"
+                alt="book-image"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+
+          <a href="/shop" class="swiper-slide box">
+            <div class="image">
+              <img
+                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1581527774i/41881472.jpg"
+                alt="book-image"
+              />
+            </div>
+            <div class="content">
+              <h3>New Arrivals</h3>
+              <div class="price">₹150 <span>₹200</span></div>
+            </div>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- arrival secton ends  -->
+
+    <!-- footer section start  -->
+    <footer class="modern-footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="/" class="footer-logo"><i class="fas fa-book"></i> Readoria</a>
+            <p class="footer-description">Your premier destination for books and literary treasures. Discover stories that inspire, educate, and entertain.</p>
+            <div class="footer-social">
+              <a href="https://www.facebook.com" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.twitter.com" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          
+          <div class="footer-links">
+            <div class="footer-links-column">
+              <h4>Explore</h4>
+              <ul>
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/shop"><i class="fas fa-store"></i> Shop</a></li>
+                <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
+                <li><a href="#arrivals"><i class="fas fa-book"></i> New Arrivals</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-links-column">
+              <h4>Customer Service</h4>
+              <ul>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                <li><a href="#"><i class="fas fa-truck"></i> Shipping Info</a></li>
+                <li><a href="#"><i class="fas fa-exchange-alt"></i> Returns</a></li>
+                <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-links-column">
+              <h4>Contact Us</h4>
+              <ul class="footer-contact">
+                <li><i class="fas fa-map-marker-alt"></i> Bangalore, India</li>
+                <li><i class="fas fa-phone-alt"></i> +91 123-456-7890</li>
+                <li><i class="fas fa-envelope"></i> Readoria@gmail.com</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="footer-payment">
+            <span>Payment Methods:</span>
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+            <i class="fab fa-cc-paypal"></i>
+          </div>
+          <div class="footer-copyright">
+            <p>&copy; 2025 Readoria. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- footer section end  -->
+
+    <!-- loader section starts -->
+
+    <div class="loader-container">
+      <img src="https://cdn.dribbble.com/userupload/22800201/file/original-7158e7e458ab051db8546bb63dafb72a.gif" alt="Loading..." />
+    </div> 
+
+   <!-- loader section ends -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/static/js/custom-alert.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/cart.js"></script>
+  </body>
+</html>

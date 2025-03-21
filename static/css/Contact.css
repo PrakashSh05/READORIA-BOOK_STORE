@@ -1,0 +1,155 @@
+/* Variables */
+:root {
+    --primary: #4CAF50;
+    --primary-light: #6fbf73;
+    --primary-dark: #3d8b40;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Nav Bar */
+.nav-bar {
+    background: var(--green);
+    color: white;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.nav-bar h1 {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 500;
+}
+
+/* Contact-specific styles */
+.contact {
+    padding: 2rem;
+    background: linear-gradient(135deg, #f6f8ff 0%, #e9f5e9 100%);
+    min-height: calc(100vh - 200px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.contact .contact-container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--glass-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--glass-shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+}
+
+.contact .form-group {
+    margin-bottom: 2rem;
+}
+
+.contact .form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--black);
+    font-weight: 500;
+    font-size: 1.6rem;
+}
+
+.contact .form-group input,
+.contact .form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.contact .form-group input:focus,
+.contact .form-group textarea:focus {
+    border-color: var(--green);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.contact .form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact .auth-submit {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contact .auth-submit:hover {
+    background: var(--dark-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Credits Section */
+.credits {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    color: var(--black);
+    font-size: 1.4rem;
+}
+
+.credits span {
+    color: var(--green);
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact {
+        padding: 1.5rem;
+    }
+    
+    .nav-bar h1 {
+        font-size: 2rem;
+    }
+    
+    .contact .contact-container {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact {
+        padding: 1rem;
+    }
+    
+    .nav-bar h1 {
+        font-size: 1.8rem;
+    }
+    
+    .contact .contact-container {
+        padding: 1.5rem;
+    }
+    
+    .contact .form-group label {
+        font-size: 1.4rem;
+    }
+    
+    .contact .form-group input,
+    .contact .form-group textarea,
+    .contact .auth-submit {
+        font-size: 1.4rem;
+    }
+}

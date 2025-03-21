@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Readoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="/static/css/custom-alert.css">
+</head>
+<body>
+    <div class="admin-container" id="admin-content">
+        <!-- Header -->
+        <header>
+            <h1>Readoria Admin</h1>
+            <nav>
+                <a href="/">Back to Site</a>
+                <button data-action="logout">Logout</button>
+            </nav>
+        </header>
+
+        <!-- Statistics Banner -->
+        <div class="stats-banner">
+            <div class="stat-card">
+                <i class="fas fa-shopping-cart"></i>
+                <div class="stat-info">
+                    <h3>Total Orders</h3>
+                    <p id="total-orders">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h3>Pending Orders</h3>
+                    <p id="pending-orders">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-envelope"></i>
+                <div class="stat-info">
+                    <h3>Unread Messages</h3>
+                    <p id="unread-messages">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <section>
+            <h2>Products</h2>
+            <button class="action-btn edit-btn" data-action="show-add-modal">Add New Product</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="products-list">
+                    <!-- Products will be loaded here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Orders Section -->
+        <section>
+            <h2>Orders</h2>
+            <div class="tab-content" id="orders-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Update Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-list">
+                        <!-- Orders will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Contact Messages Section -->
+        <section>
+            <h2>Contact Messages</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="contacts-list">
+                    <!-- Contact messages will be loaded here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Message Read Modal -->
+        <div id="read-message-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" data-action="close-read-modal">&times;</span>
+                <h2>Message Details</h2>
+                <div id="message-content">
+                    <!-- Message content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div id="order-details-modal" class="modal">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h2>Order Details</h2>
+                    <span class="close" onclick="closeOrderDetailsModal()">&times;</span>
+                </div>
+                <div id="order-details-content" class="modal-body">
+                    <!-- Content will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Product Modal -->
+        <div id="add-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" data-action="close-add-modal">&times;</span>
+                <h2>Add New Product</h2>
+                <form id="add-product-form" data-form="add-product">
+                    <div>
+                        <label for="product-name">Name:</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div>
+                        <label for="product-description">Description:</label>
+                        <textarea id="product-description" required></textarea>
+                    </div>
+                    <div>
+                        <label for="product-category">Category:</label>
+                        <select id="product-category" required>
+                            <option value="Novel">Novel</option>
+                            <option value="Memoir">Memoir</option>
+                            <option value="History">History</option>
+                            <option value="self-motivation">Self Motivation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="product-price">Price:</label>
+                        <input type="number" id="product-price" step="0.01" required>
+                    </div>
+                    <div>
+                        <label for="product-image">Product Image:</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="product-image" accept="image/*" required>
+                            <div class="image-preview" id="product-image-preview">
+                                <img id="product-preview-img" src="#" alt="Preview" style="display: none;">
+                                <span class="placeholder">Choose an image</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="product-stock">Stock:</label>
+                        <input type="number" id="product-stock" required>
+                    </div>
+                    <button type="submit" class="action-btn edit-btn">Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Product Modal -->
+        <div id="edit-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" data-action="close-edit-modal">&times;</span>
+                <h2>Edit Product</h2>
+                <form id="edit-product-form" data-form="edit-product">
+                    <input type="hidden" id="edit-product-id">
+                    <div>
+                        <label for="edit-product-name">Name:</label>
+                        <input type="text" id="edit-product-name" required>
+                    </div>
+                    <div>
+                        <label for="edit-product-description">Description:</label>
+                        <textarea id="edit-product-description" required></textarea>
+                    </div>
+                    <div>
+                        <label for="edit-product-category">Category:</label>
+                        <select id="edit-product-category" required>
+                            <option value="Novel">Novel</option>
+                            <option value="Memoir">Memoir</option>
+                            <option value="History">History</option>
+                            <option value="self-motivation">Self Motivation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="edit-product-price">Price:</label>
+                        <input type="number" id="edit-product-price" step="0.01" required>
+                    </div>
+                    <div>
+                        <label for="edit-product-image">Product Image:</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="edit-product-image" accept="image/*">
+                            <div class="image-preview" id="edit-product-image-preview">
+                                <img id="edit-product-preview-img" src="#" alt="Preview" style="display: none;">
+                                <span class="placeholder">Choose an image</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="edit-product-stock">Stock:</label>
+                        <input type="number" id="edit-product-stock" required>
+                    </div>
+                    <button type="submit" class="action-btn edit-btn">Update Product</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/static/js/custom-alert.js"></script>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

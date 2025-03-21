@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/shop.css">
+    <link rel="stylesheet" href="/static/css/custom-alert.css">
+    <style>
+        .fas {
+            font-size: 24px;
+        }
+    </style>
+
+    <script>
+        function checkLogin() {
+          const currentUser = localStorage.getItem("currentUser");
+          if (!currentUser) {
+            customAlert.warning("Please login to access the payment page!");
+            window.location.href = "index.html";
+          }
+        }
+    </script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-1">
+            <a href="/" class="logo"><i class="fas fa-book"></i> Readoria</a>
+            <div class="icons">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-bar">
+        <h1>Shop</h1>
+    </div>
+    
+    <main>
+        <aside class="sidebar">
+            <h2>Filter by Category</h2>
+            <ul>
+                <li><input type="radio" name="category" onclick="filterProducts('all')" checked><label>All</label></li>
+                <li><input type="radio" name="category" onclick="filterProducts('Novel')"><label>Novel</label></li>
+                <li><input type="radio" name="category" onclick="filterProducts('self-motivation')"><label>Self-Motivation</label></li>
+                <li><input type="radio" name="category" onclick="filterProducts('History')"><label>History</label></li>
+                <li><input type="radio" name="category" onclick="filterProducts('Memoir')"><label>Memoir</label></li>
+            </ul>
+        </aside>
+        <section class="products" id="products-container">
+            <!-- Products will be loaded dynamically -->
+        </section>
+    </main>
+
+    <script>
+        // Helper function to escape special characters in strings
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                if (category === 'all' || product.getAttribute('data-category') === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    </script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/cart.js"></script>
+    <script src="/static/js/custom-alert.js"></script>
+    <script>
+        // Load products from backend
+        async function loadProducts() {
+            try {
+                // Get search query from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('search');
+                
+                let url = '/api/products';
+                if (searchQuery) {
+                    url = `/api/products/search?q=${encodeURIComponent(searchQuery)}`;
+                }
+                
+                const response = await fetch(url);
+                const products = await response.json();
+                
+                if (products.length === 0 && searchQuery) {
+                    const container = document.getElementById('products-container');
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <h2>No results found for "${escapeHtml(searchQuery)}"</h2>
+                            <p>Try searching with different keywords or browse our categories.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                displayProducts(products);
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Display products
+        function displayProducts(products) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.setAttribute('data-category', product.category);
+                
+                productDiv.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image_url || product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/150x200?text=Book+Cover'">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-info">
+                            <h2>${product.name}</h2>
+                            <p class="category">${product.category}</p>
+                            <p class="description">${product.description || ''}</p>
+                        </div>
+                        <div class="product-actions">
+                            <p class="price">₹${parseFloat(product.price).toFixed(2)}</p>
+                            <button class="add-to-cart" onclick="addToCart('${product._id}', '${product.name.replace(/'/g, "\'")}', ${parseFloat(product.price)}, '${(product.image_url || product.image).replace(/'/g, "\'")}')">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(productDiv);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            
+            // Remove event delegation since we're using onclick
+        });
+    </script>
+</body>
+</html>

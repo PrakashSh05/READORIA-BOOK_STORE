@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Page - Readoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/cart.css" />
+    <link rel="stylesheet" href="/static/css/custom-alert.css" />
+    <link rel="stylesheet" href="/static/css/payment.css">
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="header-1">
+        <a href="/" class="logo"><i class="fas fa-book"></i>Readoria</a>
+        <div class="icons">
+          <a href="/cart" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="nav-bar">
+      <h1>Secure Checkout</h1>
+    </div>
+
+    <div class="payment-container">
+      <div class="payment-section">
+        <h2 class="section-title">Shipping Information</h2>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label for="address">Street Address</label>
+          <input type="text" id="address" required placeholder="Enter your street address">
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" required placeholder="Enter your city">
+        </div>
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" required placeholder="Enter your state">
+        </div>
+        <div class="form-group">
+          <label for="pincode">Pincode</label>
+          <input type="text" id="pincode" required placeholder="Enter your pincode">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" id="phone" required placeholder="Enter your phone number">
+        </div>
+
+        <h2 class="section-title">Payment Method</h2>
+        <div class="payment-methods">
+          <div class="payment-method">
+            <input type="radio" id="cod" name="payment-method" value="cod">
+            <label for="cod">
+              <i class="fas fa-money-bill-wave"></i>
+              Cash on Delivery
+            </label>
+          </div>
+          <div class="payment-method">
+            <input type="radio" id="online" name="payment-method" value="online">
+            <label for="online">
+              <i class="fas fa-credit-card"></i>
+              Pay Online (Razorpay)
+            </label>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button class="place-order-btn" onclick="placeOrder()">
+            <i class="fas fa-shopping-bag"></i>
+            Place Order
+          </button>
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <h2 class="section-title">Order Summary</h2>
+        <div id="order-items" class="order-items">
+          <!-- Items will be loaded dynamically -->
+        </div>
+        <div class="total-section">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span id="subtotal">₹0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Delivery Charge:</span>
+            <span id="delivery">₹0.00</span>
+          </div>
+          <div class="total-row final">
+            <span>Total:</span>
+            <span id="total">₹0.00</span>
+          </div>
+          <div id="delivery-message" class="delivery-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/static/js/custom-alert.js"></script>
+    <script>
+      // Initialize variables
+      let cartItems = [];
+      let subtotalAmount = 0;
+      const DELIVERY_THRESHOLD = 200;
+      const DELIVERY_CHARGE = 40;
+
+      async function loadCartItems() {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch('/api/cart', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const data = await response.json();
+          cartItems = data;
+          displayOrderSummary(data);
+        } catch (error) {
+          console.error('Error loading cart items:', error);
+        }
+      }
+
+      function displayOrderSummary(items) {
+        const container = document.getElementById('order-items');
+        subtotalAmount = 0;
+        
+        container.innerHTML = items.map(item => {
+          const itemTotal = item.price * item.quantity;
+          subtotalAmount += itemTotal;
+          return `
+            <div class="order-item">
+              <span>${item.name} x ${item.quantity}</span>
+              <span>₹${itemTotal.toFixed(2)}</span>
+            </div>
+          `;
+        }).join('');
+
+        updateTotals();
+      }
+
+      function updateTotals() {
+        const deliveryCharge = subtotalAmount >= DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE;
+        const total = subtotalAmount + deliveryCharge;
+
+        document.getElementById('subtotal').textContent = `₹${subtotalAmount.toFixed(2)}`;
+        document.getElementById('delivery').textContent = `₹${deliveryCharge.toFixed(2)}`;
+        document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+
+        const deliveryMessage = document.getElementById('delivery-message');
+        if (subtotalAmount >= DELIVERY_THRESHOLD) {
+          deliveryMessage.textContent = 'Congratulations! You get free delivery!';
+        } else {
+          const remaining = DELIVERY_THRESHOLD - subtotalAmount;
+          deliveryMessage.innerHTML = `Add items worth ₹${remaining.toFixed(2)} more to get <span class="delivery-threshold">FREE DELIVERY</span>`;
+        }
+      }
+
+      async function processCashOnDelivery(orderData) {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch('/api/orders/cod', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(orderData)
+          });
+
+          if (response.ok) {
+            customAlert.success('Order placed successfully! You will receive confirmation shortly.');
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 2000);
+          } else {
+            customAlert.error('Failed to place order. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error processing COD order:', error);
+          customAlert.error('An error occurred. Please try again.');
+        }
+      }
+
+      async function processOnlinePayment(orderData) {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch('/api/orders/create-razorpay-order', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(orderData)
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to create payment order');
+          }
+
+          const { orderId, amount, key } = await response.json();
+
+          // For demo purposes, just show a success message without opening Razorpay
+          customAlert.info('This is a demo: In a real implementation, Razorpay payment window would open here.');
+          setTimeout(() => {
+            customAlert.success('Order placed successfully! You will receive confirmation shortly.');
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 2000);
+          }, 2000);
+
+          // In a real implementation, you would use the Razorpay checkout as follows:
+          /*
+          const options = {
+            key: key,
+            amount: amount,
+            currency: 'INR',
+            name: 'Readoria',
+            description: 'Book Purchase',
+            order_id: orderId,
+            handler: async function (response) {
+              await verifyPayment(response, orderData);
+            },
+            prefill: {
+              name: orderData.shippingAddress.name,
+              contact: orderData.shippingAddress.phone
+            },
+            theme: {
+              color: '#27ae60'
+            }
+          };
+
+          const razorpayInstance = new Razorpay(options);
+          razorpayInstance.open();
+          */
+        } catch (error) {
+          console.error('Error processing online payment:', error);
+          customAlert.error('An error occurred. Please try again or choose a different payment method.');
+        }
+      }
+
+      async function verifyPayment(paymentResponse, orderData) {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch('/api/orders/verify-payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              ...paymentResponse,
+              orderData
+            })
+          });
+
+          if (response.ok) {
+            customAlert.success('Payment successful! Order placed successfully.');
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 2000);
+          } else {
+            customAlert.error('Payment verification failed. Please contact support.');
+          }
+        } catch (error) {
+          console.error('Error verifying payment:', error);
+          customAlert.error('An error occurred during payment verification.');
+        }
+      }
+
+      // Form validation with custom alerts
+      function validateForm() {
+        const name = document.getElementById('name').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
+
+        if (!name) {
+          customAlert.error('Please enter your full name');
+          return false;
+        }
+
+        if (!address) {
+          customAlert.error('Please enter your street address');
+          return false;
+        }
+
+        if (!city) {
+          customAlert.error('Please enter your city');
+          return false;
+        }
+
+        if (!state) {
+          customAlert.error('Please enter your state');
+          return false;
+        }
+
+        if (!pincode) {
+          customAlert.error('Please enter your pincode');
+          return false;
+        } else if (!/^\d{6}$/.test(pincode)) {
+          customAlert.error('Please enter a valid 6-digit pincode');
+          return false;
+        }
+
+        if (!phone) {
+          customAlert.error('Please enter your phone number');
+          return false;
+        } else if (!/^\d{10}$/.test(phone)) {
+          customAlert.error('Please enter a valid 10-digit phone number');
+          return false;
+        }
+
+        if (!paymentMethod) {
+          customAlert.error('Please select a payment method');
+          return false;
+        }
+
+        return true;
+      }
+
+      async function placeOrder() {
+        if (!validateForm()) {
+          return;
+        }
+
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const state = document.getElementById('state').value;
+        const pincode = document.getElementById('pincode').value;
+        const phone = document.getElementById('phone').value;
+        const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+        const deliveryCharge = subtotalAmount >= DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE;
+        const total = subtotalAmount + deliveryCharge;
+
+        const orderData = {
+          items: cartItems,
+          shippingAddress: {
+            name,
+            address,
+            city,
+            state,
+            pincode,
+            phone
+          },
+          total,
+          subtotal: subtotalAmount,
+          deliveryCharge,
+          paymentMethod
+        };
+
+        if (paymentMethod === 'cod') {
+          await processCashOnDelivery(orderData);
+        } else {
+          await processOnlinePayment(orderData);
+        }
+      }
+
+      // Load cart items when page loads
+      loadCartItems();
+    </script>
+  </body>
+</html>

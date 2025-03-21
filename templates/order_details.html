@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Readoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/order_details.css">
+    <link rel="stylesheet" href="/static/css/custom-alert.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-1">
+            <a href="/" class="logo"><i class="fas fa-book"></i>Readoria</a>
+            <div class="icons">
+                <a href="/" class="fas fa-home">Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Orders Section -->
+    <section class="order-details-section">
+        <div class="order-details-container">
+            <h1 class="order-title">My Orders</h1>
+            
+            <!-- Orders List -->
+            <div class="orders-list" id="orders-list">
+                <!-- Orders will be dynamically loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h2>No Orders Yet</h2>
+                <p>Start shopping to see your orders here!</p>
+                <a href="/shop" class="btn">Start Shopping</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Centered Credits Section -->
+    <div class="credits">
+        Created by <span>Prakash Sharma</span> | All rights reserved.
+    </div>
+
+    <script src="/static/js/custom-alert.js"></script>
+    <script src="/static/js/order_details.js"></script>
+</body>
+</html> 

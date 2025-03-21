@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+</head>
+<body>
+    <script>
+        // Store the token in localStorage
+        const token = "{{ token }}";
+        if (token) {
+            localStorage.setItem('token', token);
+        }
+        // Redirect to admin dashboard
+        window.location.href = '/admin';
+    </script>
+    <p>Redirecting to admin dashboard...</p>
+</body>
+</html> 

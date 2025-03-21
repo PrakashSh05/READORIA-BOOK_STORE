@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Readoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/cart.css">
+    <link rel="stylesheet" href="/static/css/custom-alert.css">
+    <style>
+        .fas {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-1">
+            <a href="/" class="logo"><i class="fas fa-book"></i> Readoria</a>
+            <div class="icons">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/shop"><i class="fas fa-store"></i> Shop</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-bar">
+        <h1>Shopping Cart</h1>
+    </div>
+
+    <main>
+        <div class="cart-container">
+            <div class="cart-content">
+                <div id="cart-items">
+                    <!-- Cart items will be inserted here -->
+                    <p class="loading">Loading your cart...</p>
+                </div>
+                
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₹0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery Charge:</span>
+                        <span id="delivery">₹40.00</span>
+                    </div>
+                    <div class="summary-item delivery-info">
+                        <span>Free delivery on orders above ₹200!</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="total">₹40.00</span>
+                    </div>
+                    <button onclick="proceedToPayment()" class="checkout-btn">Proceed to Payment</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/cart.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/custom-alert.js"></script>
+    <script>
+        // Check authentication status
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('cart-items').innerHTML = 
+                    '<p class="empty-cart">Please <a href="#" onclick="showLoginForm()">login</a> to view your cart</p>';
+            } else {
+                // Explicitly fetch cart on page load
+                fetchCart();
+            }
+        });
+
+        function proceedToPayment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                customAlert.warning('Please login to proceed to payment');
+                return;
+            }
+            window.location.href = '/payment';
+        }
+    </script>
+</body>
+</html>
